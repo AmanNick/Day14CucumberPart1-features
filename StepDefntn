@@ -1,0 +1,56 @@
+package StepDefntn;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class orangehrmlogin {
+	
+	
+		public static ChromeDriver driver;
+		
+		@Given("open chrome browser")
+		public void openbrowser() 
+		{
+			WebDriverManager.chromedriver().setup();
+			driver = new ChromeDriver();
+		}
+		@Given("Load the application URL")
+		public void loadurl()
+		{
+			driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		}
+		@Given("Enter the username as Admin")
+		public void enterusername()
+		{
+			driver.findElement(By.name("username")).sendKeys("Admin");
+		}
+		@Given("Enter the password as admin123")
+		public void enterpassword()
+		{
+			driver.findElement(By.name("password")).sendKeys("admin123");
+		}
+		@When("Click the Login button")
+				public void loginbutton()
+				{
+				driver.findElement(By.xpath("//button[@type='submit']")).click();
+				}
+		@Then("Orangehrm homepage displayed")
+		public void orangehrmhomepage()
+		{
+			String text = driver.findElement(By.xpath("//*[@id=\"app\"]/div[1]/div[1]/header/div[1]/div[1]/span/h6")).getText();
+			if (text.equalsIgnoreCase("Dashboard"))
+			{
+				System.out.println("Homepage is displayed - Pass");
+			}
+		}
+			
+}
